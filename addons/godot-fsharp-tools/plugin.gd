@@ -1,4 +1,4 @@
-tool
+@tool
 extends EditorPlugin
 
 ##### CLASSES #####
@@ -84,12 +84,12 @@ var create_fsharp_script_dialog: ConfirmationDialog = null
 func _enter_tree() -> void:
 	_setup_fsharp_settings()
 	_setup_create_fsharp_script_dialog()
-	add_tool_menu_item(MENU_FSHARP_SETUP, self, "_show_setup_dialog")
-	add_tool_menu_item(MENU_FSHARP_GENERATE_SCRIPT, create_fsharp_script_dialog, "popup_centered_minsize", Vector2.ZERO)
+	add_tool_menu_item(MENU_FSHARP_SETUP, self._show_setup_dialog)
+	add_tool_menu_item(MENU_FSHARP_GENERATE_SCRIPT, create_fsharp_script_dialog.popup_centered_minsize.bind(Vector2.ZERO))
 	
 	var fs := get_editor_interface().get_resource_filesystem()
 	# warning-ignore:return_value_discarded
-	fs.connect("filesystem_changed", self, "_on_filesystem_changed")
+	fs.connect("filesystem_changed", self._on_filesystem_changed)
 
 func _exit_tree() -> void:
 	ProjectSettings.set_setting(SETTINGS_FSHARP_AUTOGEN, null)
@@ -106,8 +106,8 @@ func _show_setup_dialog(_p_ud) -> void:
 	setup_dialog.name_edit.grab_focus()
 
 func _on_filesystem_changed() -> void:
-	if true and "Prerequisites Check":
-		var dir := Directory.new()
+	if true: # "Prerequisites Check":
+		var dir := DirAccess.open(".")
 		if not (ProjectSettings.has_setting(SETTINGS_FSHARP_AUTOGEN) and
 			ProjectSettings.has_setting(SETTINGS_FSHARP_DEFAULT_OUTPUT_DIR) and
 			ProjectSettings.has_setting(SETTINGS_FSHARP_DEFAULT_NAMESPACE) and
@@ -215,12 +215,12 @@ func _on_filesystem_changed() -> void:
 					basename = match_.strings[match_.names.basename] as String
 				csf.close()
 			
-			var namespace = ProjectSettings.get_setting(SETTINGS_FSHARP_DEFAULT_NAMESPACE)
-			f.store_string(default_fsharp_file_text % [namespace, fsname, basename])
+			var namespace_ = ProjectSettings.get_setting(SETTINGS_FSHARP_DEFAULT_NAMESPACE)
+			f.store_string(default_fsharp_file_text % [namespace_, fsname, basename])
 			f.close()
 		
 			if csf.open(path, File.WRITE) == OK:
-				csf.store_string(default_csharp_file_text % [namespace, csharp_classname, fsname])
+				csf.store_string(default_csharp_file_text % [namespace_, csharp_classname, fsname])
 				csf.close()
 
 ##### PRIVATE METHODS #####
@@ -247,7 +247,7 @@ func _setup_fsharp_settings() -> void:
 	if not ProjectSettings.has_setting(SETTINGS_FSHARP_DEFAULT_NAMESPACE):
 		ProjectSettings.set_setting(SETTINGS_FSHARP_DEFAULT_NAMESPACE, "")
 
-func _print_and_clear_output(var p_output: Array) -> void:
+func _print_and_clear_output(p_output: Array) -> void:
 	for line in p_output:
 		print(line)
 	p_output.clear()
@@ -321,30 +321,30 @@ func create_fsharp_script_from_csharp(p_fspath: String, p_cspath: String, p_fscl
 	var classname = p_fspath.get_file().get_basename() if not p_fsclass else p_fsclass
 	
 	var basename := ""
-	if true and "Extract C# class name and base type from C# script.":
+	if true: # "Extract C# class name and base type from C# script.":
 		var regex := RegEx.new()
 		# warning-ignore:return_value_discarded
 		regex.compile("public class (?P<classname>.+) : (?P<basename>.+)")
-		var f := File.new()
-		if f.open(p_cspath, File.READ) == OK:
+		var f := FileAccess.open(p_cspath, FileAccess.READ)
+		if f.get_error() == OK:
 			var match_ = regex.search(f.get_as_text())
 			if match_:
 				basename = match_.strings[match_.names.basename] as String
 			f.close()
 	
-	var namespace = p_namespace
-	if not namespace:
+	var namespace_ = p_namespace
+	if not namespace_:
 		var list := p_fspath.get_base_dir().split("/", false)
-		namespace = list[list.size() - 1]
+		namespace_ = list[list.size() - 1]
 	
-	if true and "Create F# script.":
-		var text = default_fsharp_file_text % [namespace, classname, basename]
-		var f := File.new()
-		if f.open(p_fspath, File.WRITE) == OK:
+	if true: # "Create F# script.":
+		var text = default_fsharp_file_text % [namespace_, classname, basename]
+		var f := FileAccess.open(p_fspath, FileAccess.WRITE)
+		if f.error == OK:
 			f.store_string(text)
 			f.close()
 	
-	if true and "Update inheritance of C# script.":
+	if true: # and "Update inheritance of C# script.":
 		var replace_inheritance := RegEx.new()
 		# warning-ignore:return_value_discarded
 		replace_inheritance.compile(" : .+\\b")
@@ -352,15 +352,15 @@ func create_fsharp_script_from_csharp(p_fspath: String, p_cspath: String, p_fscl
 		var include_namespace := RegEx.new()
 		# warning-ignore:return_value_discarded
 		include_namespace.compile("using System;")
-		var f := File.new()
-		if f.open(p_cspath, File.READ_WRITE) == OK:
+		var f := FileAccess.open(p_cspath, FileAccess.READ_WRITE)
+		if f.get_error() == OK:
 			var text = f.get_as_text()
 			text = replace_inheritance.sub(text, " : %s" % classname)
 			text = include_namespace.sub(text, (
 """using System;
 
 using %s;"""
-			) % namespace)
+			) % namespace_)
 			f.seek(0)
 			f.store_string(text)
 			

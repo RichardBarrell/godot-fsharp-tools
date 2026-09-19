@@ -1,114 +1,72 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene format=3 uid="uid://b3r54vohdwmkr"]
 
-[ext_resource path="res://addons/godot-fsharp-tools/fsharp_setup_dialog.gd" type="Script" id=1]
-[ext_resource path="res://addons/godot-fsharp-tools/icons/icon_folder.svg" type="Texture" id=2]
+[ext_resource type="Script" uid="uid://cby5y7ys3sgni" path="res://addons/godot-fsharp-tools/fsharp_setup_dialog.gd" id="1"]
+[ext_resource type="Texture2D" uid="uid://bmokanw27e8aw" path="res://addons/godot-fsharp-tools/icons/icon_folder.svg" id="2"]
 
-[node name="ConfirmationDialog" type="ConfirmationDialog"]
-margin_top = 1.0
-margin_right = 348.0
-margin_bottom = 175.0
-rect_min_size = Vector2( 250, 125 )
-window_title = "F# Project Setup"
-script = ExtResource( 1 )
+[node name="ConfirmationDialog" type="ConfirmationDialog" unique_id=908071294]
+script = ExtResource("1")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1060521590]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 8.0
-margin_top = 8.0
-margin_right = -8.0
-margin_bottom = -36.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer"]
-margin_right = 332.0
-margin_bottom = 80.0
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer" unique_id=1261468222]
+layout_mode = 2
 columns = 3
 
-[node name="NameLabel" type="Label" parent="VBoxContainer/GridContainer"]
-margin_top = 5.0
-margin_right = 117.0
-margin_bottom = 19.0
+[node name="NameLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=2005422023]
+layout_mode = 2
 text = "Library Name:"
 
-[node name="NameEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
-margin_left = 121.0
-margin_right = 300.0
-margin_bottom = 24.0
+[node name="NameEdit" type="LineEdit" parent="VBoxContainer/GridContainer" unique_id=1737160226]
+layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "\"MyLib\" -> MyLib.fsproj"
 
-[node name="Control" type="Control" parent="VBoxContainer/GridContainer"]
-margin_left = 304.0
-margin_right = 332.0
-margin_bottom = 24.0
+[node name="Control" type="Control" parent="VBoxContainer/GridContainer" unique_id=1876108281]
+layout_mode = 2
 
-[node name="PathLabel" type="Label" parent="VBoxContainer/GridContainer"]
-margin_top = 33.0
-margin_right = 117.0
-margin_bottom = 47.0
+[node name="PathLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=1260168272]
+layout_mode = 2
 text = "Library Path:"
 
-[node name="PathEdit" type="LineEdit" parent="VBoxContainer/GridContainer"]
-margin_left = 121.0
-margin_top = 28.0
-margin_right = 300.0
-margin_bottom = 52.0
+[node name="PathEdit" type="LineEdit" parent="VBoxContainer/GridContainer" unique_id=385767169]
+layout_mode = 2
 size_flags_horizontal = 3
 text = "res://"
 placeholder_text = "\"MyLib\" -> res;//MyLib.fsproj"
 
-[node name="PathButton" type="ToolButton" parent="VBoxContainer/GridContainer"]
-margin_left = 304.0
-margin_top = 28.0
-margin_right = 332.0
-margin_bottom = 52.0
-icon = ExtResource( 2 )
+[node name="PathButton" type="Button" parent="VBoxContainer/GridContainer" unique_id=1660751068]
+layout_mode = 2
+icon = ExtResource("2")
 
-[node name="CreateDirLabel" type="Label" parent="VBoxContainer/GridContainer"]
-margin_top = 61.0
-margin_right = 117.0
-margin_bottom = 75.0
+[node name="CreateDirLabel" type="Label" parent="VBoxContainer/GridContainer" unique_id=482381675]
+layout_mode = 2
 text = "Create Project Dir:"
 
-[node name="CreateDirCheck" type="CheckBox" parent="VBoxContainer/GridContainer"]
-margin_left = 121.0
-margin_top = 56.0
-margin_right = 300.0
-margin_bottom = 80.0
-pressed = true
+[node name="CreateDirCheck" type="CheckBox" parent="VBoxContainer/GridContainer" unique_id=1391582569]
+layout_mode = 2
 
-[node name="Control2" type="Control" parent="VBoxContainer/GridContainer"]
-margin_left = 304.0
-margin_top = 56.0
-margin_right = 332.0
-margin_bottom = 80.0
+[node name="Control2" type="Control" parent="VBoxContainer/GridContainer" unique_id=155195514]
+layout_mode = 2
 
-[node name="FileDialog" type="FileDialog" parent="VBoxContainer"]
-margin_left = 8.0
-margin_top = 8.0
-margin_right = 340.0
-margin_bottom = 138.0
-window_title = "Open a Directory"
-resizable = true
+[node name="FileDialog" type="FileDialog" parent="VBoxContainer" unique_id=829443698]
 mode = 2
 show_hidden_files = true
 
-[node name="FinalPathLabel" type="Label" parent="VBoxContainer"]
-margin_top = 87.0
-margin_right = 332.0
-margin_bottom = 101.0
+[node name="FinalPathLabel" type="Label" parent="VBoxContainer" unique_id=286344680]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
-valign = 1
+vertical_alignment = 1
 
-[node name="Disclaimer" type="Label" parent="VBoxContainer"]
-margin_top = 112.0
-margin_right = 332.0
-margin_bottom = 126.0
+[node name="Disclaimer" type="Label" parent="VBoxContainer" unique_id=845878573]
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "(This will take a while)"
-align = 1
-valign = 1
+horizontal_alignment = 1
+vertical_alignment = 1
